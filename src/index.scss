@@ -1,5 +1,21 @@
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9e9e9e;
+  -webkit-border-radius: 5ex;
+  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+::-webkit-scrollbar-corner {
+  background: #000;
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -24,11 +40,13 @@ a:hover {
 }
 
 body {
+  height: 100%;
+  background-color: #747bff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -65,5 +83,27 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+.form-field {
+  .MuiOutlinedInput-root {
+    border-radius: 8px;
+  }
+  fieldset {
+    border-color: #e5e5e5;
+  }
+  .Mui-focused fieldset {
+    border-color: #646cff;
+  }
+  input {
+    padding: 12px;
+  }
+  input::-webkit-input-placeholder {
+    font-family: "Satoshi";
+    font-style: normal;
+    font-weight: 400;
+    font-size: pxToRem(16px);
+    line-height: 22px;
   }
 }
