@@ -9,7 +9,7 @@ export default function Signup() {
       <div className="auth-card">
         <Grid container rowGap={3}>
           <Grid item xs={12}>
-            <div className="auth-title">Create An Account</div>
+            <div className="auth-title">Signup</div>
             <div className="auth-subtitle">
               Already have an account? <Link to="/login">Login</Link>
             </div>

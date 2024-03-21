@@ -4,7 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
 import ForgotPassword from "./ForgotPassword";
-import Dashboard from "./Dashboard";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import Graphs from "./Components/Graphs/Graphs";
 
 export default function Router() {
   return (
@@ -15,6 +16,7 @@ export default function Router() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot_password" element={<ForgotPassword />} />
       <Route path="/" element={<Dashboard />} />
+      <Route path="/graphs" element={<Graphs />} />
 
       {/* </Route> */}
     </Routes>

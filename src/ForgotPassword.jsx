@@ -25,8 +25,10 @@ export default function ForgotPassword() {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            Go back to <Link to="/signup">Signup</Link> or{" "}
-            <Link to="/login">Login</Link> page
+            <div style={{ color: "black" }}>
+              Go back to <Link to="/signup">Signup</Link> or{" "}
+              <Link to="/login">Login</Link> page
+            </div>
           </Grid>
         </Grid>
       </div>
