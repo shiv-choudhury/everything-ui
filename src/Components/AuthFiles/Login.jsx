@@ -1,3 +1,7 @@
+import React, { useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import {
   Box,
   Button,
@@ -6,14 +10,12 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField
+  Typography
 } from "@mui/material";
-import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import Visibility from "@mui/icons-material/Visibility";
 import { VisibilityOff } from "@mui/icons-material";
+import Visibility from "@mui/icons-material/Visibility";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Snackbar from "@mui/material/Snackbar";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -55,6 +57,13 @@ export default function Login() {
   return (
     <div className="auth-div">
       <div className="auth-card">
+        <div className="auth-subtitle" style={{ color: "red" }}>
+          <InfoOutlinedIcon
+            style={{ fontSize: 15, marginRight: 5, marginBottom: -2 }}
+          />
+          Use Google for Signup/Login
+        </div>
+
         <Grid container rowGap={3}>
           <Grid item xs={12}>
             <div className="auth-title">Login to Continue</div>
@@ -103,13 +112,15 @@ export default function Login() {
             >
               Login
             </Button>
-            <Box mt={2} />
+            <Box className="center" my={2}>
+              <Typography>Or</Typography>
+            </Box>
             <Button
               variant="contained"
               onClick={() => loginWithRedirect()}
               fullWidth
             >
-              Login with Google
+              Signup/Login with Google
             </Button>
             <Snackbar
               open={open}
