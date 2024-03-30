@@ -1,12 +1,12 @@
 import React from "react";
-import BaseContainer from "../BaseContainer";
 import { Typography } from "@mui/material";
+import BaseContainer from "../BaseContainer";
 
-export default function Graphs() {
+export default function Tables() {
   return (
     <div>
       <BaseContainer>
-        <Typography paragraph>Graphs</Typography>
+        <Typography paragraph>Tables</Typography>
       </BaseContainer>
     </div>
   );
