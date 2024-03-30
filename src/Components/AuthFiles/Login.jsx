@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Grid,
   IconButton,
@@ -8,10 +9,11 @@ import {
   TextField
 } from "@mui/material";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import { VisibilityOff } from "@mui/icons-material";
 import Snackbar from "@mui/material/Snackbar";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -19,6 +21,12 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [open, setOpen] = React.useState(false);
+
+  const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
+
+  if (!isLoading && isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   const handleClick = () => {
     setOpen(true);
@@ -94,6 +102,14 @@ export default function Login() {
               fullWidth
             >
               Login
+            </Button>
+            <Box mt={2} />
+            <Button
+              variant="contained"
+              onClick={() => loginWithRedirect()}
+              fullWidth
+            >
+              Login with Google
             </Button>
             <Snackbar
               open={open}
