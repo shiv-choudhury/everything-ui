@@ -7,15 +7,39 @@ import { ThemeProvider } from "@mui/material";
 import { UserContextProvider } from "./Context/AppContext.jsx";
 import Router from "./Routes/Router";
 import theme from "./Styles/theme.jsx";
+import auth0Config from "../frontend/auth0config.js";
 
 function App() {
+  console.log("baseUrl", window.location.origin);
+
+  let domain = "";
+  let clientId = "";
+
+  switch (window.location.origin) {
+    case "http://localhost:5173":
+      domain = auth0Config.localhost.domain;
+      clientId = auth0Config.localhost.clientId;
+      break;
+    case "https://my-react-vite.netlify.app":
+      domain = auth0Config.netlify.domain;
+      clientId = auth0Config.netlify.clientId;
+      break;
+    case "https://vite-project.github.app":
+      domain = auth0Config.github.domain;
+      clientId = auth0Config.github.clientId;
+      break;
+    default:
+      domain = auth0Config.localhost.domain;
+      clientId = auth0Config.localhost.clientId;
+      break;
+  }
   return (
     <>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Auth0Provider
-            domain="dev-pgi25t52e4kxj3sp.us.auth0.com"
-            clientId="josFtwXTDGkE17SiNI9KXL5f10Ru4KX9"
+            domain={domain}
+            clientId={clientId}
             authorizationParams={{
               redirect_uri: window.location.origin
             }}

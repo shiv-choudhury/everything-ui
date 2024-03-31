@@ -1,4 +1,6 @@
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Box,
   CssBaseline,
@@ -8,20 +10,17 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Toolbar,
-  Typography
+  Toolbar
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
-import { styled } from "@mui/material/styles";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Header from "./Header";
-// import DashboardContent from "./Dashboard/DashboardContent";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import TableChartIcon from "@mui/icons-material/TableChart";
-import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+import TableChartIcon from "@mui/icons-material/TableChart";
+import { styled } from "@mui/material/styles";
+
+import Header from "./Header";
 
 const drawerWidth = 200;
 
