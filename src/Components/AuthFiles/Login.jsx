@@ -77,7 +77,7 @@ export default function Login() {
             <InputLabel>E-mail</InputLabel>
             <OutlinedInput
               value={email}
-              placeholder={LoginDetails.email}
+              placeholder="example@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
               variant="outlined"
               fullWidth
@@ -86,7 +86,7 @@ export default function Login() {
           <Grid item xs={12}>
             <InputLabel>Password</InputLabel>
             <OutlinedInput
-              placeholder={LoginDetails.password}
+              placeholder="******"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type={showPassword ? "text" : "password"}
