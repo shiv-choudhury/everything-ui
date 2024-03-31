@@ -1,6 +1,6 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import React, { useEffect } from "react";
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function AuthRoutes() {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -15,9 +15,5 @@ export default function AuthRoutes() {
     return <Navigate to="/" />;
   }
 
-  return (
-    <div>
-      <Outlet />
-    </div>
-  );
+  return <div>{!isLoading && !isAuthenticated && <Outlet />}</div>;
 }

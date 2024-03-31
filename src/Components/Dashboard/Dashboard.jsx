@@ -1,15 +1,16 @@
-import { Typography } from "@mui/material";
 import React from "react";
-import BaseContainer from "../BaseContainer";
+import { Navigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Navigate, useNavigate } from "react-router-dom";
+
+import { Typography } from "@mui/material";
+
+import BaseContainer from "../BaseContainer";
 
 export default function DashboardContent() {
-  const navigate = useNavigate();
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
 
   if (!isLoading && !isAuthenticated) {
-    navigate("/login");
+    return <Navigate to="/login" />;
   }
 
   return (
