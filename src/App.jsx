@@ -24,7 +24,7 @@ function App() {
       domain = auth0Config.netlify.domain;
       clientId = auth0Config.netlify.clientId;
       break;
-    case "https://vite-project.github.app":
+    case "https://shiv1805.github.io/react-vite-project":
       domain = auth0Config.github.domain;
       clientId = auth0Config.github.clientId;
       break;
