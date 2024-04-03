@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   Box,
@@ -64,6 +64,8 @@ const Drawer = styled(MuiDrawer, {
 
 export default function BaseContainer(props) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const [drawerState, setDrawerState] = useState(true);
 
   const menuList = [
@@ -108,6 +110,9 @@ export default function BaseContainer(props) {
                 {menuList.map((item) => (
                   <ListItemButton
                     key={item.name}
+                    className={
+                      pathname === item.path ? "menu-active" : "menu-btn"
+                    }
                     onClick={() => navigate(item.path)}
                   >
                     <ListItemIcon>{item.icon}</ListItemIcon>

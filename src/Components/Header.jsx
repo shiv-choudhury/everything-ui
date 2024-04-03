@@ -17,7 +17,7 @@ const Header = ({ setDrawerState, drawerState }) => {
   // const { userState, dispatch } = useAppContext();
   const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
     useAuth0();
-  console.log("--->", user, isAuthenticated, isLoading);
+
   return (
     <AppBar
       position="fixed"

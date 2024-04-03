@@ -18,3 +18,13 @@
 .center {
   text-align: center;
 }
+
+.menu-active {
+  background: #79beff !important;
+  border-radius: 0 50px 50px 0 !important;
+}
+
+.menu-btn:hover {
+  background: #f0f0f0 !important;
+  border-radius: 0 50px 50px 0 !important;
+}
