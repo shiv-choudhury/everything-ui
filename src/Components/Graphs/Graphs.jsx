@@ -1,8 +1,8 @@
 import React from "react";
-import BaseContainer from "../BaseContainer";
-import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+
+import { Typography } from "@mui/material";
 
 export default function Graphs() {
   const navigate = useNavigate();
@@ -13,9 +13,7 @@ export default function Graphs() {
   }
   return (
     <div>
-      <BaseContainer>
-        <Typography paragraph>Graphs</Typography>
-      </BaseContainer>
+      <Typography paragraph>Graphs</Typography>
     </div>
   );
 }

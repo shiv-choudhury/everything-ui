@@ -4,8 +4,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { Typography } from "@mui/material";
 
-import BaseContainer from "../BaseContainer";
-
 export default function DashboardContent() {
   const { isAuthenticated, isLoading } = useAuth0();
 
@@ -15,9 +13,7 @@ export default function DashboardContent() {
 
   return (
     <div>
-      <BaseContainer>
-        <Typography paragraph>Dashboard</Typography>
-      </BaseContainer>
+      <Typography paragraph>Dashboard</Typography>
     </div>
   );
 }
