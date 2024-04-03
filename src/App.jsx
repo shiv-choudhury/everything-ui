@@ -8,7 +8,6 @@ import { UserContextProvider } from "./Context/AppContext.jsx";
 import Router from "./Routes/Router";
 import theme from "./Styles/theme.jsx";
 import auth0Config from "../frontend/auth0config.js";
-import BaseContainer from "./Components/BaseContainer.jsx";
 
 function App() {
   console.log("baseUrl", window.location.origin);
@@ -46,9 +45,7 @@ function App() {
             }}
           >
             <UserContextProvider>
-              <BaseContainer>
-                <Router />
-              </BaseContainer>
+              <Router />
             </UserContextProvider>
           </Auth0Provider>
         </BrowserRouter>

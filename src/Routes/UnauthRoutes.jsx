@@ -2,6 +2,8 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
+import BaseContainer from "../Components/BaseContainer";
+
 export default function UnauthRoutes() {
   const { isAuthenticated, isLoading } = useAuth0();
 
@@ -9,5 +11,13 @@ export default function UnauthRoutes() {
     return <Navigate to="/login" />;
   }
 
-  return <div>{!isLoading && isAuthenticated && <Outlet />}</div>;
+  return (
+    <div>
+      {!isLoading && isAuthenticated && (
+        <BaseContainer>
+          <Outlet />
+        </BaseContainer>
+      )}
+    </div>
+  );
 }
