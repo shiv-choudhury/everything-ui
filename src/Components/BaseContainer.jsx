@@ -10,7 +10,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Toolbar
+  Toolbar,
+  Tooltip
 } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import BarChartIcon from "@mui/icons-material/BarChart";
@@ -106,20 +107,22 @@ export default function BaseContainer(props) {
           <Toolbar />
           <Box>
             <List>
-              <ListItem disablePadding sx={{ display: "block" }}>
-                {menuList.map((item) => (
-                  <ListItemButton
-                    key={item.name}
-                    className={
-                      pathname === item.path ? "menu-active" : "menu-btn"
-                    }
-                    onClick={() => navigate(item.path)}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.name} />
-                  </ListItemButton>
-                ))}
-              </ListItem>
+              {menuList.map((item, i) => (
+                <ListItem key={i} disablePadding>
+                  <Tooltip title={item.name} placement="right" arrow>
+                    <ListItemButton
+                      key={item.name}
+                      className={
+                        pathname === item.path ? "menu-active" : "menu-btn"
+                      }
+                      onClick={() => navigate(item.path)}
+                    >
+                      <ListItemIcon>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.name} />
+                    </ListItemButton>
+                  </Tooltip>
+                </ListItem>
+              ))}
             </List>
           </Box>
         </Drawer>
