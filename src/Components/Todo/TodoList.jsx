@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 export default function TodoList() {
   return (
     <div>
-      <Typography paragraph>TodoList</Typography>
+      <Typography variant="h5">TodoList</Typography>
     </div>
   );
 }

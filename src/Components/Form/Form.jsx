@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 export default function Forms() {
   return (
     <div>
-      <Typography paragraph>Forms</Typography>
+      <Typography variant="h5">Forms</Typography>
     </div>
   );
 }

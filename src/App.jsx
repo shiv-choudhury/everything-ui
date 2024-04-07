@@ -8,6 +8,8 @@ import { UserContextProvider } from "./Context/AppContext.jsx";
 import Router from "./Routes/Router";
 import theme from "./Styles/theme.jsx";
 import auth0Config from "../frontend/auth0config.js";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   console.log("baseUrl", window.location.origin);
@@ -45,6 +47,11 @@ function App() {
             }}
           >
             <UserContextProvider>
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                pauseOnHover
+              />
               <Router />
             </UserContextProvider>
           </Auth0Provider>
