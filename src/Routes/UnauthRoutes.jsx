@@ -12,7 +12,7 @@ export default function UnauthRoutes() {
   }
 
   return (
-    <div>
+    <div className="unauth-container">
       {!isLoading && isAuthenticated && (
         <BaseContainer>
           <Outlet />
