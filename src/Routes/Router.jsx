@@ -14,6 +14,7 @@ import TodoList from "../Components/Todo/TodoList";
 import Forms from "../Components/Form/Form";
 import PageNotFound from "../Components/PageNotFound";
 import AppLoader from "../Components/Loader";
+import About from "../Components/About/About";
 
 export default function Router() {
   return (
@@ -30,6 +31,7 @@ export default function Router() {
           <Route path="/tables" element={<Tables />} />
           <Route path="/todolist" element={<TodoList />} />
           <Route path="/forms" element={<Forms />} />
+          <Route path="/about" element={<About />} />
           {/* 404 not found page for unknown routes */}
           <Route path="*" element={<PageNotFound />} />
         </Route>

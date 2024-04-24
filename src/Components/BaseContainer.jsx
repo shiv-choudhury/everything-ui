@@ -19,6 +19,8 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import TableChartIcon from "@mui/icons-material/TableChart";
+import InfoIcon from "@mui/icons-material/Info";
+import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import { styled } from "@mui/material/styles";
 
 import Header from "./Header";
@@ -94,6 +96,16 @@ export default function BaseContainer(props) {
       name: "Forms",
       path: "/forms",
       icon: <FormatAlignCenterIcon />
+    },
+    {
+      name: "About",
+      path: "/about",
+      icon: <InfoIcon />
+    },
+    {
+      name: "404",
+      path: "/notfound",
+      icon: <DoNotDisturbIcon />
     }
   ];
 
