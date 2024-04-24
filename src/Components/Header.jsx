@@ -4,9 +4,10 @@ import {
   CircularProgress,
   IconButton,
   Toolbar,
+  Tooltip,
   Typography
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,22 +19,38 @@ const Header = ({ setDrawerState, drawerState }) => {
   const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
     useAuth0();
 
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [drawerState]);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "[" || event.keyCode === "BracketLeft") {
+      setDrawerState(!drawerState);
+    }
+  };
+
   return (
     <AppBar
       position="fixed"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
       <Toolbar>
-        <IconButton
-          onClick={() => setDrawerState(!drawerState)}
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
-          <MenuIcon />
-        </IconButton>
+        <Tooltip title="or click [" arrow placement="right">
+          <IconButton
+            onClick={() => setDrawerState(!drawerState)}
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Tooltip>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           My Vite Project
         </Typography>
