@@ -21,8 +21,8 @@ import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import TableChartIcon from "@mui/icons-material/TableChart";
 import InfoIcon from "@mui/icons-material/Info";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
+import FastfoodIcon from "@mui/icons-material/Fastfood";
 import { styled } from "@mui/material/styles";
-
 import Header from "./Header";
 
 const drawerWidth = 200;
@@ -96,6 +96,11 @@ export default function BaseContainer(props) {
       name: "Forms",
       path: "/forms",
       icon: <FormatAlignCenterIcon />
+    },
+    {
+      name: "Recipe App",
+      path: "/recipe",
+      icon: <FastfoodIcon />
     },
     {
       name: "About",
