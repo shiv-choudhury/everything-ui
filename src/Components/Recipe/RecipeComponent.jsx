@@ -10,6 +10,12 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Typography
 } from "@mui/material";
@@ -33,27 +39,28 @@ export default function RecipeComponent() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   //TODO: use useReducer hook
 
+  useEffect(() => {
+    if (!search) return;
+    fetchRecipe();
+  }, [search, page, rowsPerPage]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
-  useEffect(() => {
-    fetchRecipe(search);
-  }, [page, rowsPerPage]);
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const fetchRecipe = async (search) => {
-    setSearch(search);
+  const fetchRecipe = async () => {
     const params = {
       q: search,
       from: page * rowsPerPage,
       to: (page + 1) * rowsPerPage
     };
     setIsLoading(true);
+
     try {
       const response = await getRecipes({ params });
       setCount(response.data.count);
@@ -68,7 +75,7 @@ export default function RecipeComponent() {
   const onTextChange = (e) => {
     clearTimeout(timeoutId);
     const timeout = setTimeout(() => {
-      fetchRecipe(e.target.value);
+      setSearch(e.target.value);
     }, 1000);
     setTimoutId(timeout);
   };
@@ -159,25 +166,8 @@ const CardComponent = (props) => {
       >
         <DialogTitle>Ingredients</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            <Typography variant="h6">{label}</Typography>
-            <ul>
-              {ingredients.map((ingredient) => (
-                <li key={ingredient.text} style={{ marginTop: "10px" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-end"
-                    }}
-                  >
-                    <span>{ingredient.text}</span>
-                    <i>{`(${ingredient.weight}g)`}</i>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </DialogContentText>
+          <Typography variant="h6">{label}</Typography>
+          <IngredientsTable ingredients={ingredients} />
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={handleClose}>
@@ -186,5 +176,29 @@ const CardComponent = (props) => {
         </DialogActions>
       </Dialog>
     </>
+  );
+};
+
+const IngredientsTable = (props) => {
+  const { ingredients } = props;
+  return (
+    <TableContainer>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Ingredients</TableCell>
+            <TableCell>Quantity(g)</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {ingredients.map((ingredient, i) => (
+            <TableRow key={`${ingredient.text}-${i}`}>
+              <TableCell>{ingredient.text}</TableCell>
+              <TableCell>{ingredient.weight}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
