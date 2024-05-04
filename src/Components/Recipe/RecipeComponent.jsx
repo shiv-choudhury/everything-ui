@@ -99,14 +99,16 @@ export default function RecipeComponent() {
           </Grid>
         )}
       </Grid>
-      <TablePagination
-        component="div"
-        count={count}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {recipeList?.hits?.length > 0 && (
+        <TablePagination
+          component="div"
+          count={count}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
     </div>
   );
 }
@@ -161,7 +163,6 @@ const CardComponent = (props) => {
             <Typography variant="h6">{label}</Typography>
             <ul>
               {ingredients.map((ingredient) => (
-                // <li><div>{`${ingredient.text}(${ingredient.weight}g)`}</div></li>
                 <li key={ingredient.text} style={{ marginTop: "10px" }}>
                   <div
                     style={{
