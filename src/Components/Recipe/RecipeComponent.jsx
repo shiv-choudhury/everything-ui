@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
   Table,
@@ -76,6 +75,7 @@ export default function RecipeComponent() {
     clearTimeout(timeoutId);
     const timeout = setTimeout(() => {
       setSearch(e.target.value);
+      setPage(0);
     }, 1000);
     setTimoutId(timeout);
   };
@@ -109,11 +109,12 @@ export default function RecipeComponent() {
       {recipeList?.hits?.length > 0 && (
         <TablePagination
           component="div"
-          count={count}
+          count={count < 100 ? count : 100}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[10, 15, 20, 25, 50, 100]}
         />
       )}
     </div>
