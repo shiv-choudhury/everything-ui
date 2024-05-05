@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import moment from "moment";
+import { useForm } from "react-hook-form";
 
 import {
   Box,
@@ -15,9 +17,8 @@ import {
   TextField,
   Typography
 } from "@mui/material";
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import moment from "moment";
+
+import { getCommits } from "../Api/apistore";
 
 export default function Tables() {
   const [commits, setCommits] = useState([]);
@@ -34,11 +35,13 @@ export default function Tables() {
 
   const fetchCommits = async (formData) => {
     const { username, repoName } = formData;
+    const params = {
+      per_page: 100,
+      page: 1
+    };
     setIsLoading(true);
     try {
-      const response = await axios.get(
-        `https://api.github.com/repos/${username}/${repoName}/commits`
-      );
+      const response = await getCommits({ params }, username, repoName);
       setCommits(response.data);
       setIsLoading(false);
     } catch (error) {

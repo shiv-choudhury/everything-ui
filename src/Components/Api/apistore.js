@@ -13,3 +13,14 @@ export const getRecipes = async (config) => {
 
   return resp;
 };
+
+export const getCommits = async (config, username, repoName) => {
+  console.log("config", config);
+  const resp = await axios({
+    method: "get",
+    url: `https://api.github.com/repos/${username}/${repoName}/commits`,
+    ...config
+  });
+
+  return resp;
+};

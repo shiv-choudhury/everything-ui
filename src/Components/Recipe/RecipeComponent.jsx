@@ -182,6 +182,7 @@ const CardComponent = (props) => {
 
 const IngredientsTable = (props) => {
   const { ingredients } = props;
+
   return (
     <TableContainer>
       <Table>
@@ -195,7 +196,11 @@ const IngredientsTable = (props) => {
           {ingredients.map((ingredient, i) => (
             <TableRow key={`${ingredient.text}-${i}`}>
               <TableCell>{ingredient.text}</TableCell>
-              <TableCell>{ingredient.weight}</TableCell>
+              <TableCell>
+                {Number.isInteger(ingredient.weight)
+                  ? ingredient.weight
+                  : ingredient.weight.toFixed(2)}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
