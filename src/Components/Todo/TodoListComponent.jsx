@@ -34,7 +34,7 @@ function TodoListComponent() {
 
   useEffect(() => {
     let data = localStorage.getItem("todos");
-    if (JSON.parse(data).length) {
+    if (JSON.parse(data)?.length) {
       setTodos(JSON.parse(data));
     }
   }, []);
@@ -119,7 +119,7 @@ function TodoListComponent() {
           </Button>
         </Stack>
         <Typography variant="h5">List</Typography>
-        {todos.length ? (
+        {todos?.length ? (
           todos?.map((todo, index) => (
             <Stack
               key={index}
