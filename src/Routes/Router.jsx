@@ -16,6 +16,7 @@ import PageNotFound from "../Components/PageNotFound";
 import AppLoader from "../Components/Loader";
 import About from "../Components/About/About";
 import RecipeApp from "../Components/Recipe/Recipe";
+import JiraBoard from "../Components/JiraBoard/JiraBoard";
 
 export default function Router() {
   return (
@@ -31,6 +32,7 @@ export default function Router() {
           <Route path="/graphs" element={<Graphs />} />
           <Route path="/tables" element={<Tables />} />
           <Route path="/todolist" element={<TodoList />} />
+          <Route path="/jira" element={<JiraBoard />} />
           <Route path="/forms" element={<Forms />} />
           <Route path="/recipe" element={<RecipeApp />} />
           <Route path="/about" element={<About />} />

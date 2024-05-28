@@ -20,8 +20,9 @@ import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import TableChartIcon from "@mui/icons-material/TableChart";
 import InfoIcon from "@mui/icons-material/Info";
-import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
+import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
+
 import { styled } from "@mui/material/styles";
 import Header from "./Header";
 
@@ -88,6 +89,11 @@ export default function BaseContainer(props) {
       icon: <TableChartIcon />
     },
     {
+      name: "Jira Board",
+      path: "/jira",
+      icon: <ViewKanbanIcon />
+    },
+    {
       name: "Todo List",
       path: "/todolist",
       icon: <PlaylistAddCheckIcon />
@@ -106,11 +112,6 @@ export default function BaseContainer(props) {
       name: "About",
       path: "/about",
       icon: <InfoIcon />
-    },
-    {
-      name: "404",
-      path: "/notfound",
-      icon: <DoNotDisturbIcon />
     }
   ];
 
