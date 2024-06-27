@@ -22,6 +22,8 @@ import TableChartIcon from "@mui/icons-material/TableChart";
 import InfoIcon from "@mui/icons-material/Info";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
+// import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 import { styled } from "@mui/material/styles";
 import Header from "./Header";
@@ -112,6 +114,16 @@ export default function BaseContainer(props) {
       name: "About",
       path: "/about",
       icon: <InfoIcon />
+    },
+    // {
+    //   name: "React Flow",
+    //   path: "/reactflow",
+    //   icon: <AccountTreeIcon />
+    // },
+    {
+      name: "AI Chat Bot",
+      path: "/aichatbot",
+      icon: <AutoAwesomeIcon />
     }
   ];
 
