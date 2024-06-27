@@ -11,10 +11,8 @@ import {
   Typography
 } from "@mui/material";
 import React, { useState } from "react";
-import { GOOGLE_API_KEY } from "../../Constants/key";
-import { gEndIndex, gStartIndex } from "../../Constants/constants";
 
-const API_KEY = GOOGLE_API_KEY.substring(gStartIndex, gEndIndex);
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 const formatResponse = (response) => {
   const lines = response.split("\n");
@@ -120,8 +118,6 @@ const formatResponse = (response) => {
 };
 
 export default function AIChatBot() {
-  console.log("API_KEY", API_KEY);
-
   const [response, setResponse] = useState("");
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
