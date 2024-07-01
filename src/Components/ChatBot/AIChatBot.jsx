@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Grid,
+  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -11,10 +12,12 @@ import {
   Typography
 } from "@mui/material";
 import React, { useState } from "react";
+import ImageChatBot from "./ImageChatBot";
+import SendIcon from "@mui/icons-material/Send";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
-const formatResponse = (response) => {
+export const formatResponse = (response) => {
   const lines = response.split("\n");
 
   // Regex patterns for different formatting
@@ -157,16 +160,24 @@ export default function AIChatBot() {
             placeholder="Enter Prompt"
             size="small"
             variant="outlined"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                getPromptResponse();
+              }
+            }}
             onChange={(e) => setPrompt(e.target.value)}
           />
         </Grid>
         <Grid item md={2}>
           <Button variant="contained" onClick={getPromptResponse}>
-            Get Response
+            <SendIcon />
           </Button>
         </Grid>
       </Grid>
       <Box m={4}>{isLoading ? "Generating..." : formatResponse(response)}</Box>
+      <Box mt={2}>
+        <ImageChatBot />
+      </Box>
     </div>
   );
 }

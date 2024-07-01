@@ -12,7 +12,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  console.log("baseUrl", window.location.origin);
+  // console.log("baseUrl", window.location.origin);
 
   let domain = "";
   let clientId = "";
