@@ -210,14 +210,17 @@ export default function AIChatBot() {
           >
             <TextField
               fullWidth
-              // multiline
+              multiline
               maxRows={8}
               placeholder="Enter Prompt & Image"
               sx={{ background: "#ffffff" }}
               size="small"
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") runPrompt();
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  runPrompt();
+                }
               }}
             />
             <TextField
