@@ -1,21 +1,25 @@
+import React, { useRef, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
 import {
   Box,
-  Button,
+  Divider,
   Grid,
   IconButton,
   List,
   ListItem,
   ListItemText,
+  Paper,
   Stack,
+  Switch,
   TextField,
   Typography
 } from "@mui/material";
-import React, { useState } from "react";
-import ImageChatBot from "./ImageChatBot";
 import SendIcon from "@mui/icons-material/Send";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const formatResponse = (response) => {
   const lines = response.split("\n");
@@ -120,64 +124,135 @@ export const formatResponse = (response) => {
   return formattedContent;
 };
 
-export default function AIChatBot() {
-  const [response, setResponse] = useState("");
-  const [prompt, setPrompt] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+const fileToGenerativePart = async (file) => {
+  const base64EncodedDataPromise = new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result.split(",")[1]);
+    reader.readAsDataURL(file);
+  });
+  return {
+    inlineData: { data: await base64EncodedDataPromise, mimeType: file.type }
+  };
+};
 
-  async function getPromptResponse() {
-    const genAI = new GoogleGenerativeAI(API_KEY);
+export default function AIChatBot() {
+  const fileInputRef = useRef(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [prompt, setPrompt] = useState("");
+  const [files, setFiles] = useState(null);
+  const [result, setResult] = useState("");
+  const [useStream, setUseStream] = useState(true);
+
+  const handleFileChange = (event) => {
+    setFiles(event.target.files);
+  };
+
+  const runPrompt = async () => {
+    // if (!files) return;
+    if (!prompt) return;
     setIsLoading(true);
+
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    let params;
+    if (files) {
+      const imageParts = await Promise.all(
+        [...files].map(fileToGenerativePart)
+      );
+      params = [prompt, ...imageParts];
+    } else {
+      params = [prompt];
+    }
+
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const result = await model.generateContent(prompt);
-      const responseText = result.response.candidates[0].content.parts[0].text;
-      setResponse(responseText);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
+      if (useStream) {
+        const result = await model.generateContentStream(params);
+        setIsLoading(false);
+        let text = "";
+        for await (const chunk of result.stream) {
+          const chunkText = chunk.text();
+          console.log(chunkText);
+          text += chunkText;
+          setResult(text);
+        }
+      } else {
+        const result = await model.generateContent(prompt);
+        const resultText = result.response.candidates[0].content.parts[0].text;
+        setResult(resultText);
+        setIsLoading(false);
+      }
+    } catch (err) {
+      console.log(err);
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div>
-      <Stack direction="row">
+      <Stack direction="row" mb={2}>
         <Typography variant="h5">AI Chat Bot</Typography>
         <Typography variant="h6">(Powered by Google Generative AI)</Typography>
       </Stack>
       <Grid
         container
-        direction="row"
-        justifyContent="space-between"
         spacing={2}
-        mt={1}
+        justifyContent={"center"}
+        alignItems={"center"}
       >
-        <Grid item md={10}>
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            placeholder="Enter Prompt"
-            size="small"
-            variant="outlined"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                getPromptResponse();
-              }
+        <Grid item xs={8}>
+          <Paper
+            sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              background: "#f5f5f5"
             }}
-            onChange={(e) => setPrompt(e.target.value)}
-          />
+          >
+            <TextField
+              fullWidth
+              // multiline
+              maxRows={8}
+              placeholder="Enter Prompt & Image"
+              sx={{ background: "#ffffff" }}
+              size="small"
+              onChange={(e) => setPrompt(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") runPrompt();
+              }}
+            />
+            <TextField
+              type="file"
+              inputProps={{ ref: fileInputRef }}
+              placeholder="Enter Prompt"
+              size="small"
+              variant="outlined"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+            <IconButton
+              type="button"
+              sx={{ p: "10px" }}
+              onClick={() => fileInputRef.current.click()}
+            >
+              <AddPhotoAlternateIcon />
+            </IconButton>
+            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <IconButton color="primary" sx={{ p: "10px" }} onClick={runPrompt}>
+              <SendIcon />
+            </IconButton>
+          </Paper>
         </Grid>
-        <Grid item md={2}>
-          <Button variant="contained" onClick={getPromptResponse}>
-            <SendIcon />
-          </Button>
+        <Grid item xs={2}>
+          <Stack direction="row" alignItems="center">
+            <Typography variant="body1">Use Stream</Typography>
+            <Switch
+              checked={useStream}
+              onChange={() => setUseStream(!useStream)}
+            />
+          </Stack>
         </Grid>
       </Grid>
-      <Box m={4}>{isLoading ? "Generating..." : formatResponse(response)}</Box>
-      <Box mt={2}>
-        <ImageChatBot />
-      </Box>
+      <Box m={4}>{isLoading ? "Generating..." : formatResponse(result)}</Box>
     </div>
   );
 }
