@@ -156,9 +156,9 @@ export default function BaseContainer(props) {
             </List>
           </Box>
         </Drawer>
-        <Box sx={{ flexGrow: 1, p: 3 }}>
+        <Box sx={{ flexGrow: 1, p: 3, height: "100%", width: "100%" }}>
           <Toolbar />
-          <div>{props.children}</div>
+          <Box>{props.children}</Box>
         </Box>
       </Box>
     </div>

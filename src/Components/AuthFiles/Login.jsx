@@ -119,6 +119,7 @@ export default function Login() {
               variant="contained"
               onClick={() => loginWithRedirect()}
               fullWidth
+              style={{ backgroundColor: "#0791ff" }}
             >
               Signup/Login with Google
             </Button>

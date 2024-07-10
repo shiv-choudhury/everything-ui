@@ -7,14 +7,16 @@ import {
   Tooltip,
   Typography
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { ConfirmDialog } from "../Constants/GenericComponents";
 // import useAppContext from "../Context/AppContext";
 
 const Header = ({ setDrawerState, drawerState }) => {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   // const { userState, dispatch } = useAppContext();
   const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
     useAuth0();
@@ -31,6 +33,10 @@ const Header = ({ setDrawerState, drawerState }) => {
     if (event.key === "[" || event.keyCode === "BracketLeft") {
       setDrawerState(!drawerState);
     }
+  };
+
+  const handleLogout = () => {
+    logout({ returnTo: window.location.origin });
   };
 
   return (
@@ -73,13 +79,19 @@ const Header = ({ setDrawerState, drawerState }) => {
             <Button
               style={{ marginLeft: 10 }}
               variant="outlined"
-              onClick={() =>
-                logout({ logoutParams: { returnTo: window.location.origin } })
-              }
+              onClick={() => setOpen(true)}
               color="inherit"
             >
               Logout
             </Button>
+            <ConfirmDialog
+              open={open}
+              setOpen={setOpen}
+              headerText="Confirm Logout"
+              bodyText="Are you sure you want to logout?"
+              onAction={handleLogout}
+              actionBtnText="Logout"
+            />
           </>
         )}
         {/* <Button
