@@ -196,24 +196,33 @@ export default function AIChatBotComponent() {
         container
         spacing={2}
         justifyContent={"center"}
-        alignItems={"center"}
+        alignItems={"flex-start"}
       >
         <Grid item xs={10}>
           <Paper
             sx={{
               p: "2px 4px",
               display: "flex",
-              alignItems: "center",
+              alignItems: "flex-start",
               background: "#f5f5f5"
             }}
           >
+            <Tooltip title="Upload Image" arrow placement="top">
+              <IconButton
+                type="button"
+                sx={{ p: "10px" }}
+                onClick={() => fileInputRef.current.click()}
+              >
+                <AddPhotoAlternateIcon />
+              </IconButton>
+            </Tooltip>
             <TextField
               value={prompt}
               fullWidth
               multiline
               maxRows={8}
               placeholder="Enter Prompt & Image"
-              sx={{ background: "#ffffff" }}
+              sx={{ background: "#ffffff", my: "2px" }}
               size="small"
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={(e) => {
@@ -232,23 +241,13 @@ export default function AIChatBotComponent() {
               style={{ display: "none" }}
               onChange={handleFileChange}
             />
-            <Tooltip title="Upload Image" arrow placement="top">
-              <IconButton
-                type="button"
-                sx={{ p: "10px" }}
-                onClick={() => fileInputRef.current.click()}
-              >
-                <AddPhotoAlternateIcon />
-              </IconButton>
-            </Tooltip>
-            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <IconButton color="primary" sx={{ p: "10px" }} onClick={runPrompt}>
               <SendIcon />
             </IconButton>
           </Paper>
         </Grid>
         <Grid item xs={2}>
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" alignItems="center" mt="4px">
             <Tooltip
               title="When ON response will be streamed"
               arrow
