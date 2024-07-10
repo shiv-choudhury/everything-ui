@@ -3,6 +3,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import {
   Box,
+  Card,
+  CardContent,
   Divider,
   Grid,
   IconButton,
@@ -13,10 +15,12 @@ import {
   Stack,
   Switch,
   TextField,
+  Tooltip,
   Typography
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import AppLoader, { LOADER } from "../Loader";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -171,7 +175,6 @@ export default function AIChatBotComponent() {
         let text = "";
         for await (const chunk of result.stream) {
           const chunkText = chunk.text();
-          console.log(chunkText);
           text += chunkText;
           setResult(text);
         }
@@ -182,20 +185,20 @@ export default function AIChatBotComponent() {
         setIsLoading(false);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setIsLoading(false);
     }
   };
 
   return (
-    <div>
+    <Box mx="20%">
       <Grid
         container
         spacing={2}
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <Grid item xs={8}>
+        <Grid item xs={10}>
           <Paper
             sx={{
               p: "2px 4px",
@@ -205,6 +208,7 @@ export default function AIChatBotComponent() {
             }}
           >
             <TextField
+              value={prompt}
               fullWidth
               multiline
               maxRows={8}
@@ -214,7 +218,7 @@ export default function AIChatBotComponent() {
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault(); // Prevent the default action of adding a new line
+                  e.preventDefault();
                   runPrompt();
                 }
               }}
@@ -228,13 +232,15 @@ export default function AIChatBotComponent() {
               style={{ display: "none" }}
               onChange={handleFileChange}
             />
-            <IconButton
-              type="button"
-              sx={{ p: "10px" }}
-              onClick={() => fileInputRef.current.click()}
-            >
-              <AddPhotoAlternateIcon />
-            </IconButton>
+            <Tooltip title="Upload Image" arrow placement="top">
+              <IconButton
+                type="button"
+                sx={{ p: "10px" }}
+                onClick={() => fileInputRef.current.click()}
+              >
+                <AddPhotoAlternateIcon />
+              </IconButton>
+            </Tooltip>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <IconButton color="primary" sx={{ p: "10px" }} onClick={runPrompt}>
               <SendIcon />
@@ -243,7 +249,13 @@ export default function AIChatBotComponent() {
         </Grid>
         <Grid item xs={2}>
           <Stack direction="row" alignItems="center">
-            <Typography variant="body1">Use Stream</Typography>
+            <Tooltip
+              title="When ON response will be streamed"
+              arrow
+              placement="top"
+            >
+              <Typography variant="body1">Use Stream</Typography>
+            </Tooltip>
             <Switch
               checked={useStream}
               onChange={() => setUseStream(!useStream)}
@@ -251,7 +263,58 @@ export default function AIChatBotComponent() {
           </Stack>
         </Grid>
       </Grid>
-      <Box m={4}>{isLoading ? "Generating..." : formatResponse(result)}</Box>
-    </div>
+      {result || isLoading ? (
+        <Box m={4}>{isLoading ? <LOADER /> : formatResponse(result)}</Box>
+      ) : (
+        <QuickPrompts setPrompt={setPrompt} />
+      )}
+    </Box>
   );
 }
+
+const QuickPrompts = (props) => {
+  const { setPrompt } = props;
+
+  const prompts = [
+    {
+      label: "Write an essay on Rainy day in 1000 words",
+      prompt: "Write an essay on Rainy day in 1000 words"
+    },
+    {
+      label: "What came first, the chicken or the egg?",
+      prompt: "What came first, the chicken or the egg?"
+    },
+    {
+      label: "Explain me the Big Bang Theory",
+      prompt: "Explain me the Big Bang Theory"
+    },
+    { label: "Records of Virat Kohli", prompt: "Records of Virat Kohli" }
+  ];
+
+  return (
+    <Box mx="20%" my={4}>
+      <Typography textAlign="center" variant="h5" mb={2}>
+        Quick Prompts
+      </Typography>
+      <Grid container spacing={2}>
+        {prompts.map((prompt) => (
+          <Grid item xs={6} key={prompt.prompt}>
+            <Card
+              key={prompt.prompt}
+              onClick={() => setPrompt(prompt.prompt)}
+              elevation={1}
+              sx={{
+                height: "100%",
+                background: "#f5f5f5",
+                cursor: "pointer",
+                "&:hover": { background: "#cde7ff" }
+              }}
+            >
+              <CardContent>{prompt.label}</CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+};
