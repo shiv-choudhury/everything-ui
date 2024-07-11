@@ -20,7 +20,9 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import AppLoader, { LOADER } from "../Loader";
+import AddIcon from "@mui/icons-material/Add";
+
+import { LOADER } from "../Loader";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -141,12 +143,14 @@ const fileToGenerativePart = async (file) => {
 
 export default function AIChatBotComponent() {
   const fileInputRef = useRef(null);
+  const textInputRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [files, setFiles] = useState(null);
   const [result, setResult] = useState("");
   const [useStream, setUseStream] = useState(true);
+  const [abortController, setAbortController] = useState(null);
 
   const handleFileChange = (event) => {
     setFiles(event.target.files);
@@ -156,6 +160,9 @@ export default function AIChatBotComponent() {
     // if (!files) return;
     if (!prompt) return;
     setIsLoading(true);
+
+    const controller = new AbortController();
+    setAbortController(controller);
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     let params;
@@ -170,7 +177,9 @@ export default function AIChatBotComponent() {
 
     try {
       if (useStream) {
-        const result = await model.generateContentStream(params);
+        const result = await model.generateContentStream(params, {
+          signal: controller.signal
+        });
         setIsLoading(false);
         let text = "";
         for await (const chunk of result.stream) {
@@ -179,7 +188,9 @@ export default function AIChatBotComponent() {
           setResult(text);
         }
       } else {
-        const result = await model.generateContent(prompt);
+        const result = await model.generateContent(prompt, {
+          signal: controller.signal
+        });
         const resultText = result.response.candidates[0].content.parts[0].text;
         setResult(resultText);
         setIsLoading(false);
@@ -188,6 +199,15 @@ export default function AIChatBotComponent() {
       console.error(err);
       setIsLoading(false);
     }
+  };
+
+  const handleNewChat = () => {
+    if (abortController) {
+      abortController.abort();
+    }
+    setPrompt("");
+    setResult("");
+    textInputRef.current.focus();
   };
 
   return (
@@ -207,6 +227,16 @@ export default function AIChatBotComponent() {
               background: "#f5f5f5"
             }}
           >
+            <Tooltip title="New Chat" arrow placement="top">
+              <IconButton
+                type="button"
+                sx={{ p: "10px" }}
+                onClick={() => handleNewChat()}
+              >
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+            <Divider sx={{ height: 35, m: 0.5 }} orientation="vertical" />
             <Tooltip title="Upload Image" arrow placement="top">
               <IconButton
                 type="button"
@@ -217,6 +247,7 @@ export default function AIChatBotComponent() {
               </IconButton>
             </Tooltip>
             <TextField
+              inputRef={textInputRef}
               value={prompt}
               fullWidth
               multiline
@@ -234,7 +265,7 @@ export default function AIChatBotComponent() {
             />
             <TextField
               type="file"
-              inputProps={{ ref: fileInputRef }}
+              inputRef={fileInputRef}
               placeholder="Enter Prompt"
               size="small"
               variant="outlined"
