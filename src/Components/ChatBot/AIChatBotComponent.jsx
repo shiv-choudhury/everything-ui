@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { toast } from "react-toastify";
 
 import {
   Box,
@@ -21,6 +22,7 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import AddIcon from "@mui/icons-material/Add";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 import { LOADER } from "../Loader";
 
@@ -147,18 +149,30 @@ export default function AIChatBotComponent() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState([]);
   const [result, setResult] = useState("");
   const [useStream, setUseStream] = useState(true);
   const [abortController, setAbortController] = useState(null);
 
   const handleFileChange = (event) => {
-    setFiles(event.target.files);
+    const newFiles = Array.from(event.target.files).map((file) => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+    console.log("newFiles", newFiles);
+
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
+  const handleDeleteFile = (index) => {
+    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const runPrompt = async () => {
-    // if (!files) return;
-    if (!prompt) return;
+    if (!prompt) {
+      toast.info("Please enter a prompt");
+      return;
+    }
     setIsLoading(true);
 
     const controller = new AbortController();
@@ -166,9 +180,9 @@ export default function AIChatBotComponent() {
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     let params;
-    if (files) {
+    if (files?.length > 0) {
       const imageParts = await Promise.all(
-        [...files].map(fileToGenerativePart)
+        files.map((fileObj) => fileToGenerativePart(fileObj.file))
       );
       params = [prompt, ...imageParts];
     } else {
@@ -196,8 +210,9 @@ export default function AIChatBotComponent() {
         setIsLoading(false);
       }
     } catch (err) {
-      console.error(err);
       setIsLoading(false);
+      toast.error(err.message);
+      console.error(err);
     }
   };
 
@@ -246,24 +261,42 @@ export default function AIChatBotComponent() {
                 <AddPhotoAlternateIcon />
               </IconButton>
             </Tooltip>
+            <Grid container direction="column">
+              <Grid item>
+                <TextField
+                  inputRef={textInputRef}
+                  value={prompt}
+                  fullWidth
+                  multiline
+                  maxRows={8}
+                  placeholder="Enter Prompt & Image"
+                  sx={{ background: "#ffffff", my: "2px" }}
+                  size="small"
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      runPrompt();
+                    }
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                {files?.length > 0 && (
+                  <Box mt={2}>
+                    {files.map((file, index) => (
+                      <ImagePreview
+                        key={index}
+                        file={file}
+                        onDelete={() => handleDeleteFile(index)}
+                      />
+                    ))}
+                  </Box>
+                )}
+              </Grid>
+            </Grid>
             <TextField
-              inputRef={textInputRef}
-              value={prompt}
-              fullWidth
-              multiline
-              maxRows={8}
-              placeholder="Enter Prompt & Image"
-              sx={{ background: "#ffffff", my: "2px" }}
-              size="small"
-              onChange={(e) => setPrompt(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  runPrompt();
-                }
-              }}
-            />
-            <TextField
+              inputProps={{ accept: "image/*", multiple: true }}
               type="file"
               inputRef={fileInputRef}
               placeholder="Enter Prompt"
@@ -301,6 +334,32 @@ export default function AIChatBotComponent() {
     </Box>
   );
 }
+
+const ImagePreview = ({ file, onDelete }) => {
+  const iconStyles = {
+    position: "absolute",
+    top: -8,
+    right: -8,
+    backgroundColor: "white",
+    padding: "2px",
+    "&:hover": {
+      backgroundColor: "lightgrey"
+    }
+  };
+
+  return (
+    <Box sx={{ position: "relative", display: "inline-block", mb: 1, mr: 1 }}>
+      <img
+        src={file.preview}
+        alt="Preview"
+        style={{ width: 50, height: 50, borderRadius: 8, objectFit: "cover" }}
+      />
+      <IconButton onClick={onDelete} size="small" sx={iconStyles}>
+        <CancelOutlinedIcon fontSize="small" />
+      </IconButton>
+    </Box>
+  );
+};
 
 const QuickPrompts = (props) => {
   const { setPrompt } = props;
