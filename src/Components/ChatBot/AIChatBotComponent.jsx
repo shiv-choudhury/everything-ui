@@ -159,8 +159,6 @@ export default function AIChatBotComponent() {
       file,
       preview: URL.createObjectURL(file)
     }));
-    console.log("newFiles", newFiles);
-
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
   };
 
@@ -222,6 +220,7 @@ export default function AIChatBotComponent() {
     }
     setPrompt("");
     setResult("");
+    setFiles([]);
     textInputRef.current.focus();
   };
 
@@ -349,11 +348,13 @@ const ImagePreview = ({ file, onDelete }) => {
 
   return (
     <Box sx={{ position: "relative", display: "inline-block", mb: 1, mr: 1 }}>
-      <img
-        src={file.preview}
-        alt="Preview"
-        style={{ width: 50, height: 50, borderRadius: 8, objectFit: "cover" }}
-      />
+      <Tooltip title={file.file.name} arrow>
+        <img
+          src={file.preview}
+          alt="Preview"
+          style={{ width: 50, height: 50, borderRadius: 8, objectFit: "cover" }}
+        />
+      </Tooltip>
       <IconButton onClick={onDelete} size="small" sx={iconStyles}>
         <CancelOutlinedIcon fontSize="small" />
       </IconButton>
