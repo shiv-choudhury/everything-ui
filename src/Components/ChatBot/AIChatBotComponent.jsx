@@ -154,18 +154,6 @@ export default function AIChatBotComponent() {
   const [useStream, setUseStream] = useState(true);
   const [abortController, setAbortController] = useState(null);
 
-  const handleFileChange = (event) => {
-    const newFiles = Array.from(event.target.files).map((file) => ({
-      file,
-      preview: URL.createObjectURL(file)
-    }));
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-  };
-
-  const handleDeleteFile = (index) => {
-    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
-
   const runPrompt = async () => {
     if (!prompt) {
       toast.info("Please enter a prompt");
@@ -212,6 +200,37 @@ export default function AIChatBotComponent() {
       toast.error(err.message);
       console.error(err);
     }
+  };
+
+  const handleFileChange = (files) => {
+    const newFiles = Array.from(files).map((file) => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
+  const handleManualFileUpload = (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      handleFileChange(event.target.files);
+    }
+  };
+
+  const handlePaste = (event) => {
+    const items = event.clipboardData.items;
+    const imageItems = Array.from(items).filter(
+      (item) => item.type.indexOf("image") !== -1
+    );
+
+    if (imageItems.length > 0) {
+      event.preventDefault();
+      const files = imageItems.map((item) => item.getAsFile());
+      handleFileChange(files);
+    }
+  };
+
+  const handleDeleteFile = (index) => {
+    setFiles(files.filter((_, i) => i !== index));
   };
 
   const handleNewChat = () => {
@@ -272,6 +291,7 @@ export default function AIChatBotComponent() {
                   sx={{ background: "#ffffff", my: "2px" }}
                   size="small"
                   onChange={(e) => setPrompt(e.target.value)}
+                  onPaste={handlePaste}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
@@ -302,7 +322,7 @@ export default function AIChatBotComponent() {
               size="small"
               variant="outlined"
               style={{ display: "none" }}
-              onChange={handleFileChange}
+              onChange={handleManualFileUpload}
             />
             <IconButton color="primary" sx={{ p: "10px" }} onClick={runPrompt}>
               <SendIcon />
@@ -328,7 +348,7 @@ export default function AIChatBotComponent() {
       {result || isLoading ? (
         <Box m={4}>{isLoading ? <LOADER /> : formatResponse(result)}</Box>
       ) : (
-        <QuickPrompts setPrompt={setPrompt} />
+        <QuickPrompts textInputRef={textInputRef} setPrompt={setPrompt} />
       )}
     </Box>
   );
@@ -363,7 +383,7 @@ const ImagePreview = ({ file, onDelete }) => {
 };
 
 const QuickPrompts = (props) => {
-  const { setPrompt } = props;
+  const { setPrompt, textInputRef } = props;
 
   const prompts = [
     {
@@ -391,7 +411,10 @@ const QuickPrompts = (props) => {
           <Grid item xs={6} key={prompt.prompt}>
             <Card
               key={prompt.prompt}
-              onClick={() => setPrompt(prompt.prompt)}
+              onClick={() => {
+                setPrompt(prompt.prompt);
+                textInputRef.current.focus();
+              }}
               elevation={1}
               sx={{
                 height: "100%",
