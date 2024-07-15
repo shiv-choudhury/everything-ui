@@ -58,7 +58,7 @@ const Header = ({ setDrawerState, drawerState }) => {
           </IconButton>
         </Tooltip>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          My Vite Project
+          Everything UI
         </Typography>
 
         {!isAuthenticated && isLoading ? (

@@ -22,7 +22,7 @@ function App() {
       domain = auth0Config.localhost.domain;
       clientId = auth0Config.localhost.clientId;
       break;
-    case "https://my-react-vite.netlify.app":
+    case "https://everything-ui.netlify.app":
       domain = auth0Config.netlify.domain;
       clientId = auth0Config.netlify.clientId;
       break;
