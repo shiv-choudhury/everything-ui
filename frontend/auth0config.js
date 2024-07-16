@@ -1,15 +1,15 @@
 const auth0Config = {
   localhost: {
-    domain: "dev-pgi25t52e4kxj3sp.us.auth0.com",
-    clientId: "josFtwXTDGkE17SiNI9KXL5f10Ru4KX9"
+    domain: import.meta.env.VITE_AUTH0_DOMAIN,
+    clientId: import.meta.env.VITE_AUTH0_CLIENTID_LOCALHOST
   },
   github: {
-    domain: "dev-pgi25t52e4kxj3sp.us.auth0.com",
-    clientId: "M66QOelYHacfZU8pTl9NvWWi3HFk4i2g"
+    domain: import.meta.env.VITE_AUTH0_DOMAIN,
+    clientId: import.meta.env.VITE_AUTH0_CLIENTID_GITHUB
   },
   netlify: {
-    domain: "dev-pgi25t52e4kxj3sp.us.auth0.com",
-    clientId: "clEABDt55QzFJx9khnlJvLRhgi55d5FK"
+    domain: import.meta.env.VITE_AUTH0_DOMAIN,
+    clientId: import.meta.env.VITE_AUTH0_CLIENTID_NETLIFY
   }
 };
 
