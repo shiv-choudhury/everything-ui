@@ -1,11 +1,12 @@
 import { Box, LinearProgress, Skeleton } from "@mui/material";
+import logo from "../assets/everything-ui-logo.png";
 
 const AppLoader = () => {
   return (
     <div className="yellow_bg">
       <div className="loader_wrapper">
-        <img src="../assets/app.svg" />
-        <LinearProgress color="success" />
+        <img src={logo} width="100%" />
+        <LinearProgress color="warning" />
       </div>
     </div>
   );

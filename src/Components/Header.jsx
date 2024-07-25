@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import {
   AppBar,
   Button,
@@ -7,11 +11,10 @@ import {
   Tooltip,
   Typography
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useNavigate } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import { ConfirmDialog } from "../Constants/GenericComponents";
+// import logo from "../assets/everything-ui-logo.png";
 // import useAppContext from "../Context/AppContext";
 
 const Header = ({ setDrawerState, drawerState }) => {
@@ -57,6 +60,7 @@ const Header = ({ setDrawerState, drawerState }) => {
             <MenuIcon />
           </IconButton>
         </Tooltip>
+        {/* <img src={logo} height={63} alt="logo" /> */}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Everything UI
         </Typography>
