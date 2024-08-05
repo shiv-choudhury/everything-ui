@@ -12,6 +12,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Modal,
   Paper,
   Stack,
   Switch,
@@ -25,6 +26,7 @@ import AddIcon from "@mui/icons-material/Add";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 import { LOADER } from "../Loader";
+import { ConfirmDialog } from "../../Constants/GenericComponents";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -355,6 +357,8 @@ export default function AIChatBotComponent() {
 }
 
 const ImagePreview = ({ file, onDelete }) => {
+  const [open, setOpen] = useState(false);
+
   const iconStyles = {
     position: "absolute",
     top: -8,
@@ -370,14 +374,37 @@ const ImagePreview = ({ file, onDelete }) => {
     <Box sx={{ position: "relative", display: "inline-block", mb: 1, mr: 1 }}>
       <Tooltip title={file.file.name} arrow>
         <img
+          onClick={() => setOpen(true)}
           src={file.preview}
           alt="Preview"
-          style={{ width: 50, height: 50, borderRadius: 8, objectFit: "cover" }}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 8,
+            objectFit: "cover",
+            cursor: "pointer"
+          }}
         />
       </Tooltip>
       <IconButton onClick={onDelete} size="small" sx={iconStyles}>
         <CancelOutlinedIcon fontSize="small" />
       </IconButton>
+      <ConfirmDialog
+        open={open}
+        setOpen={setOpen}
+        cancelBtnText="Close"
+        bodyText={
+          <img
+            src={file.preview}
+            alt="Preview"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain"
+            }}
+          />
+        }
+      />
     </Box>
   );
 };
