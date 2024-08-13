@@ -123,7 +123,7 @@ export default function BaseContainer(props) {
     {
       name: "AI Chat Bot",
       path: "/aichatbot",
-      icon: <AutoAwesomeIcon />
+      icon: <AutoAwesomeIcon color="secondary" />
     }
   ];
 
