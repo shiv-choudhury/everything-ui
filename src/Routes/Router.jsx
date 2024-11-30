@@ -19,6 +19,7 @@ import RecipeApp from "../Components/Recipe/Recipe";
 import JiraBoard from "../Components/JiraBoard/JiraBoard";
 // import ReactFlow from "../Components/Flow/ReactFlow";
 import AIChatBot from "../Components/ChatBot/AIChatBot";
+import Webcam from "../Components/Webcam/Webcam";
 
 export default function Router() {
   return (
@@ -38,8 +39,9 @@ export default function Router() {
           <Route path="/forms" element={<Forms />} />
           <Route path="/recipe" element={<RecipeApp />} />
           {/* <Route path="/reactflow" element={<ReactFlow />} /> */}
-          <Route path="/aichatbot" element={<AIChatBot />} />
           <Route path="/about" element={<About />} />
+          <Route path="/webcam" element={<Webcam />} />
+          <Route path="/aichatbot" element={<AIChatBot />} />
           {/* 404 not found page for unknown routes */}
           <Route path="*" element={<PageNotFound />} />
         </Route>

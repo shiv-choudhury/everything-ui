@@ -24,6 +24,7 @@ import FastfoodIcon from "@mui/icons-material/Fastfood";
 import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
 // import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import CameraIcon from "@mui/icons-material/Camera";
 
 import { styled } from "@mui/material/styles";
 import Header from "./Header";
@@ -114,6 +115,11 @@ export default function BaseContainer(props) {
       name: "About",
       path: "/about",
       icon: <InfoIcon />
+    },
+    {
+      name: "Webcam",
+      path: "/webcam",
+      icon: <CameraIcon />
     },
     // {
     //   name: "React Flow",
